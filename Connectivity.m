@@ -91,12 +91,7 @@ classdef Connectivity
                 sbj = append(listOfsubjs(n).folder, '/', listOfsubjs(n).name);
                 ptic('\n*** var_to_tsdata... ');
                 load(sbj);
-                disp(listOfsubjs);
-                disp(sbj);
-                disp(length(listOfsubjs));
-
                 X = data;
-
                 ptoc;
                 name = split(listOfsubjs(n).name, '.');
                 %dirTosbj =  '/home/proactionlab/Documents/projects/connectivity/ToolsArea_outputs/' + string(name(1));
