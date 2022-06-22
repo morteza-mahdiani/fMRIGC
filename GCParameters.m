@@ -1,6 +1,5 @@
 classdef GCParameters
     %Summary of this class
-
     properties
         ntrials   = 1;      % number of trials
         nobs      = 1100;   % number of observations per trial

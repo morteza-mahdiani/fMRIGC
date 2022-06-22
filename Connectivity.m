@@ -156,7 +156,11 @@ classdef Connectivity
                 %                 title(['Significant at p = ' num2str(alpha)])
                 %                 fprintf(2,'\nNOTE: no frequency-domain pairwise-conditional causality calculation in GCCA compatibility mode!\n');
                 %                 saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
-                GC3DMat( :,: ,n)= pval;
+                
+                %convert p-vals to z score
+                zscore = norminv(pval);
+                GC3DMat( :,: ,n)= zscore;
+                
                 %Free up used memory for other loops
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
             end
