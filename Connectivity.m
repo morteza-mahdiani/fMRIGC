@@ -165,8 +165,6 @@ classdef Connectivity
 %                 fprintf(2,'\nNOTE: no frequency-domain pairwise-conditional causality calculation in GCCA compatibility mode!\n');
 %                 saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
                 GC3DMat( :,: ,n)= pval;
-                disp(n);
-                disp('yesyesyeyseysyeysyeyesyesyeysyesyesysyeysyeysyeysyeysyeyseysye');
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
             end
             
