@@ -1,7 +1,6 @@
 classdef Connectivity
     %Summary of this class
     %   Detailed explanation 
-
     properties
         inputPathOfData
         inputPathOfMasks
