@@ -1,6 +1,6 @@
 classdef Connectivity
     %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
+    %   Detailed explanation goes here test
     % JW test comment
     properties
         inputPathOfData
@@ -13,26 +13,30 @@ classdef Connectivity
     end
 
     methods
-        function obj = Connectivity(pathOfData, pathOfMasks, outputPath)
+        function obj = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID)
             obj.inputPathOfData = pathOfData;
             obj.inputPathOfMasks = pathOfMasks;
             obj.outputPath = outputPath;
+
+            first_sub_ID = fID;
+            last_sub_ID = lID;
+            sub_range = (first_sub_ID:last_sub_ID);
+
         end
         function preprocess(obj)
-            subjRange = [3:30];
             seedStr = '%s_%s_10mm_Sphere.nii';
             %regions = {'lPMTG','lMFus','lIPL'};
             regions = {'rOFA','rFFA','rSTSF'};
             TCDataLength = 1100;
             % prepare the proposed path
-            for sbj = subjRange
+            for sbj = obj.sub_range
                 cSubj = sprintf('sub-%1.2d',sbj);
-                cSubjTC = sprintf(obj.inputPathOfData,cSubj);
+                cSubjTC = fullfile(obj.inputPathOfData,cSubj,'/');
                 files = dir(cSubjTC);
                 flag = [files.isdir];
                 if isempty(flag),continue,end
                 fileName = files(~flag).name;
-                cSubjTC = append(cSubjTC, fileName);
+                cSubjTC = append(cSubjTC, fileName); 
                 if ~exist(cSubjTC),continue,end
 
                 allSeedTCMat = nan(TCDataLength,size(regions,2));
@@ -52,10 +56,9 @@ classdef Connectivity
         end
 
         function GCM(obj)
-            subjRange = [3:30];
             seedStr = '%s_%s_10mm_Sphere.nii';
-            listOfsubjs = dir(append(obj.inputPathOfData, '*.mat'));
-            GC3DMat = nan(3, 3, 26);
+            listOfsubjs = dir(append(obj.outputPath, '*.mat'));
+            GC3DMat = nan(3, 3, 3);
             for n = 1 : size(listOfsubjs)
                 %% Parameters
                 ntrials   = 1;     % number of trials
@@ -84,7 +87,7 @@ classdef Connectivity
                 ptoc;
                 name = split(listOfsubjs(n).name, '.');
                 %dirTosbj =  '/home/proactionlab/Documents/projects/connectivity/ToolsArea_outputs/' + string(name(1));
-                dirTosbj =  '/home/proactionlab/Documents/projects/connectivity/FaceArea_outputs/' + string(name(1));
+                dirTosbj =  '/Users/saminjamshidi/Documents/condata/out/FaceArea_outputs/' + string(name(1));
                 mkdir(dirTosbj);
                 %% Model order estimation
                 % Calculate information criteria up to max model order
@@ -94,10 +97,10 @@ classdef Connectivity
                 [~,bmo_AIC] = min(AIC);
                 [~,bmo_BIC] = min(BIC);
                 % Plot information criteria.
-                figure(1); clf;
-                plot((1:momax)',[AIC BIC]);
-                saveas(gcf,dirTosbj+'/'+string(name(1))+'_IC.png')
-                legend('AIC','BIC');
+%                 figure(1); clf;
+%                 plot((1:momax)',[AIC BIC]);
+%                 saveas(gcf,dirTosbj+'/'+string(name(1))+'_IC.png')
+%                 legend('AIC','BIC');
                 amo = 20; % actual model order
                 fprintf('\nbest model order (AIC) = %d\n',bmo_AIC);
                 fprintf('best model order (BIC) = %d\n',bmo_BIC);
@@ -135,25 +138,25 @@ classdef Connectivity
                 pval = mvgc_pval(F,morder,nobs,ntrials,1,1,nvars-2,tstat);
                 sig  = significance(pval,alpha,mhtc);
                 % Plot time-domain causal graph, p-values and significance.
-                figure(2); clf;
-                subplot(1,3,1);
-                plot_pw(F);
-                disp(pval);
-                title('Pairwise-conditional GC');
-                subplot(1,3,2);
-                plot_pw(pval);
-                title('p-values');
-                subplot(1,3,3);
-                plot_pw(sig);
-                title(['Significant at p = ' num2str(alpha)])
-                fprintf(2,'\nNOTE: no frequency-domain pairwise-conditional causality calculation in GCCA compatibility mode!\n');
-                saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
+%                 figure(2); clf;
+%                 subplot(1,3,1);
+%                 plot_pw(F);
+%                 disp(pval);
+%                 title('Pairwise-conditional GC');
+%                 subplot(1,3,2);
+%                 plot_pw(pval);
+%                 title('p-values');
+%                 subplot(1,3,3);
+%                 plot_pw(sig);
+%                 title(['Significant at p = ' num2str(alpha)])
+%                 fprintf(2,'\nNOTE: no frequency-domain pairwise-conditional causality calculation in GCCA compatibility mode!\n');
+%                 saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
                 GC3DMat( :,: ,n)= pval;
                 n = n + 1;
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
             end
             %save(append(append(obj.outputPath, 'GC3Doutput_toolsAreas'), '.mat'),'GC3DMat')
-            %save(append(append(obj.outputPath, 'GC3Doutput_faceAreas'), '.mat'),'GC3DMat')
+            save(append(append(obj.outputPath, 'GC3Doutput_faceAreas'), '.mat'),'GC3DMat')
         end
     end
 end
