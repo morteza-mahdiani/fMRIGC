@@ -15,7 +15,7 @@ classdef Connectivity
         regions
     end
 
-    
+
     methods
         function obj = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs)
             obj.inputPathOfData = pathOfData;
@@ -166,9 +166,7 @@ classdef Connectivity
 %                 saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
                 GC3DMat( :,: ,n)= pval;
                 disp(n);
-                n = n + 1;
-                disp(n);
-                disp('yesyesyeysyeysyeysyeyesyesyeysyesyesysyeysyeysyeysyeysyeyseysye');
+                disp('yesyesyeyseysyeysyeyesyesyeysyesyesysyeysyeysyeysyeysyeyseysye');
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
             end
             
