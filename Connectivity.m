@@ -1,33 +1,39 @@
 classdef Connectivity
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here test
-    % JW test comment
+    %Summary of this class
+    %   Detailed explanation 
+
     properties
         inputPathOfData
-    end
-    properties
         inputPathOfMasks
+        outputPath
+        first_sub_ID
+        last_sub_ID
+%         path_to_MVGC
     end
     properties
-        outputPath
+        sub_range
+        regions
     end
 
+    
     methods
-        function obj = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID)
+        function obj = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs)
             obj.inputPathOfData = pathOfData;
             obj.inputPathOfMasks = pathOfMasks;
             obj.outputPath = outputPath;
-
-            first_sub_ID = fID;
-            last_sub_ID = lID;
-            sub_range = (first_sub_ID:last_sub_ID);
+            obj.first_sub_ID = fID;
+            obj.last_sub_ID = lID;
+            obj.sub_range = (obj.first_sub_ID: obj.last_sub_ID);
+            obj.regions = ROIs;
+%             obj.path_to_MVGC = path_to_MVGC;
 
         end
-        function preprocess(obj)
+        function preprocess(obj, TCDataLength)
             seedStr = '%s_%s_10mm_Sphere.nii';
             %regions = {'lPMTG','lMFus','lIPL'};
-            regions = {'rOFA','rFFA','rSTSF'};
-            TCDataLength = 1100;
+            %regions = {'rOFA','rFFA','rSTSF'};
+            %TCDataLength = 1100;
+
             % prepare the proposed path
             for sbj = obj.sub_range
                 cSubj = sprintf('sub-%1.2d',sbj);
@@ -36,12 +42,12 @@ classdef Connectivity
                 flag = [files.isdir];
                 if isempty(flag),continue,end
                 fileName = files(~flag).name;
-                cSubjTC = append(cSubjTC, fileName); 
+                cSubjTC = append(cSubjTC, fileName);
                 if ~exist(cSubjTC),continue,end
 
-                allSeedTCMat = nan(TCDataLength,size(regions,2));
-                for sd =1:size(regions,2)
-                    cSubjSeed = fullfile(obj.inputPathOfMasks,cSubj, sprintf(seedStr,cSubj,regions{sd}));
+                allSeedTCMat = nan(TCDataLength,size(obj.regions,2));
+                for sd =1:size(obj.regions,2)
+                    cSubjSeed = fullfile(obj.inputPathOfMasks,cSubj, sprintf(seedStr,cSubj,obj.regions{sd}));
                     if ~exist(cSubjSeed),continue,end
 
                     % use cosmo to load data
@@ -49,6 +55,7 @@ classdef Connectivity
                     ds_seed = cosmo_remove_useless_data(ds_seed);
                     allSeedTCMat(:,sd) = mean(ds_seed.samples,2);
                 end
+
                 % save data
                 data = transpose(allSeedTCMat);
                 save(append(append(obj.outputPath, cSubj), '.mat'),'data')
@@ -56,10 +63,10 @@ classdef Connectivity
         end
 
         function GCM(obj)
-            seedStr = '%s_%s_10mm_Sphere.nii';
-            listOfsubjs = dir(append(obj.outputPath, '*.mat'));
-            GC3DMat = nan(3, 3, 3);
-            for n = 1 : size(listOfsubjs)
+%             obj.setPath(obj.path_to_MVGC)
+            listOfsubjs = dir(append('/Users/saminjamshidi/Documents/condata/outG/', '*.mat'));
+            GC3DMat = nan(3, 3, length(obj.sub_range));
+            for n = 1 : length(listOfsubjs)
                 %% Parameters
                 ntrials   = 1;     % number of trials
                 nobs      = 1100;   % number of observations per trial
@@ -73,7 +80,8 @@ classdef Connectivity
                 seed      = 0;      % random seed (0 for unseeded)
 
                 %% Generate VAR test data
-                nvars = 3; % number of variables
+                nvars = length(obj.regions); % number of variables
+
                 % Residuals covariance matrix.
                 SIGT = eye(nvars);
                 fprintf('\n ______________________________________________________________________');
@@ -83,7 +91,12 @@ classdef Connectivity
                 sbj = append(listOfsubjs(n).folder, '/', listOfsubjs(n).name);
                 ptic('\n*** var_to_tsdata... ');
                 load(sbj);
+                disp(listOfsubjs);
+                disp(sbj);
+                disp(length(listOfsubjs));
+
                 X = data;
+
                 ptoc;
                 name = split(listOfsubjs(n).name, '.');
                 %dirTosbj =  '/home/proactionlab/Documents/projects/connectivity/ToolsArea_outputs/' + string(name(1));
@@ -152,11 +165,48 @@ classdef Connectivity
 %                 fprintf(2,'\nNOTE: no frequency-domain pairwise-conditional causality calculation in GCCA compatibility mode!\n');
 %                 saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
                 GC3DMat( :,: ,n)= pval;
+                disp(n);
                 n = n + 1;
+                disp(n);
+                disp('yesyesyeysyeysyeysyeyesyesyeysyesyesysyeysyeysyeysyeysyeyseysye');
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
             end
+            
             %save(append(append(obj.outputPath, 'GC3Doutput_toolsAreas'), '.mat'),'GC3DMat')
             save(append(append(obj.outputPath, 'GC3Doutput_faceAreas'), '.mat'),'GC3DMat')
         end
     end
+    
+%     methods(Static)
+%         function setPath(path_to_MVGC)
+% 
+%             % Add mvgc root directory and appropriate subdirectories to path
+%             mvgc_root = fileparts(mfilename(path_to_MVGC)); % directory containing this file
+% 
+%             % essentials
+%             addpath(mvgc_root);
+%             addpath(fullfile(mvgc_root,'core'));
+%             addpath(fullfile(mvgc_root,'gc'));
+%             addpath(fullfile(mvgc_root,'gc','GCCA_compat'));
+%             addpath(fullfile(mvgc_root,'gc','subsample'));
+%             addpath(fullfile(mvgc_root,'stats'));
+%             addpath(fullfile(mvgc_root,'utils'));
+%             if ~fexists(@rng) || ~fexists(@randi) % legacy hack
+%                 addpath(fullfile(mvgc_root,'utils','legacy'));
+%                 if ~fexists(@rng),   addpath(fullfile(mvgc_root,'utils','legacy','rng'));   end
+%                 if ~fexists(@randi), addpath(fullfile(mvgc_root,'utils','legacy','randi')); end
+%             end
+%             addpath(fullfile(mvgc_root,'demo'));
+%             addpath(fullfile(mvgc_root,'mex'));
+%             addpath(fullfile(mvgc_root,'experimental'));
+%             addpath(fullfile(mvgc_root,'docs')); % don't add the 'html' subdirectory
+% 
+%             % comment out for release
+%             % addpath(fullfile(mvgc_root,'testing'));
+%             % addpath(fullfile(mvgc_root,'maintainer'));
+% 
+%             fprintf('[mvgc startup] Added MVGC root directory %s and subdirectories to path\n',mvgc_root);
+%         end
+%     end
+
 end
