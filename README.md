@@ -23,9 +23,9 @@ gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tsta
 
 The parameters are:
 
-- **ntrials**&emsp;&emsp;&emsp;&emsp;number of trials
-- **nobs**&emsp;&emsp;&emsp;&emsp;number of observations per trial
-- **regmode**&emsp;&emsp;&emsp;&emsp;VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
+- **ntrials**&nbsp;&nbsp;&nbsp;&nbsp;number of trials
+- **nobs**&nbsp;&nbsp;&nbsp;&nbsp;number of observations per trial
+- **regmode**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
 - **icregmode**&emsp;&emsp;&emsp;&emsp;information criteria regression mode ('OLS', 'LWR' or empty for default)
 - **morder**&emsp;&emsp;&emsp;&emsp;model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
 - **momax**       &emsp;&emsp;maximum model order for model order estimation
