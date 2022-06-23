@@ -17,9 +17,9 @@ This repository provides an object oriented code for investigating the directed 
 ### Quick Guide
 First, you should create an instance of the GCParameters class to set the parameters that are required for granger cuasality analysis obtained by MVGC toolbox as bellow:
 
-'''
+%%
 gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tstat, alpha, mhtc, seed);
-'''
+%%
 
 The parameters are:
 
@@ -36,15 +36,15 @@ seed        % random seed (0 for unseeded)
 
 For example we can set them like this:
 
-'''
+%%
 gcInst = GCParameters(1,1100,'OLS', 'LWR', 'AIC', 20, 'F', 0.05, 'FDR', 0)
-'''
+%%
 
 Secondly we need to create an instance for Connectivity class by calling its constructor as below:
 
-'''
+%%
 inst = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs, path_to_MVGC)
-'''
+%%
 
 The parameters are:
 
@@ -58,8 +58,9 @@ path_to_MVGC 	% path to the MVGC toolbox root in our local device
 
 For example we can set them like this:
 
-'''
-inst = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox' )'''
+%%
+inst = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox' 
+%%
 
 ## License
 
