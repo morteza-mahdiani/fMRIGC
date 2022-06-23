@@ -23,17 +23,16 @@ gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tsta
 
 The parameters are:
 
-- **ntrials**    
-		--number of trials
-- **nobs**    number of observations per trial
-- **regmode**    VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
-- **icregmode** &emsp;&emsp;&emsp;&emsp;information criteria regression mode ('OLS', 'LWR' or empty for default)
-- **morder** &emsp;&emsp;&emsp;&emsp;model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
-- **momax**         &emsp;&emsp;maximum model order for model order estimation
-- **tstat**       &emsp;&emsp;statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
-- **alpha**       &emsp;&emsp;significance level for significance test
-- **mhtc**        &emsp;&emsp;multiple hypothesis test correction (see routine 'significance')
-- **seed**        &emsp;&emsp;random seed (0 for unseeded)
+- **ntrials**------------number of trials
+- **nobs**---------------number of observations per trial
+- **regmode**------------VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
+- **icregmode**----------information criteria regression mode ('OLS', 'LWR' or empty for default)
+- **morder**-------------model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
+- **momax**--------------maximum model order for model order estimation
+- **tstat**--------------statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
+- **alpha**--------------significance level for significance test
+- **mhtc**---------------multiple hypothesis test correction (see routine 'significance')
+- **seed**---------------random seed (0 for unseeded)
 
 For example we can set them like this:
 
