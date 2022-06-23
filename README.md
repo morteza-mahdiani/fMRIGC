@@ -23,7 +23,7 @@ gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tsta
 
 The parameters are:
 
-- **ntrials**     *Tabspace* *Tabspace* % number of trials
+- **ntrials**     emsp emsp % number of trials
 - **nobs**        *Tabspace* *Tabspace* % number of observations per trial
 - **regmode**     *Tabspace* *Tabspace* % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
 - **icregmode**   *Tabspace* *Tabspace* % information criteria regression mode ('OLS', 'LWR' or empty for default)
