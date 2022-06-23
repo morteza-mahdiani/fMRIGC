@@ -79,6 +79,30 @@ For example we can set them like this:
 c_instance = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox' 
 ```
 
+Finally you should use preprocess and GCM methods for the initialized instance of the Connectivity class! For preprocess function you should pass the number of trials as follow:
+
+```bash
+c_instance.preprocess(number_of_trials)
+```
+
+Use a number like:
+
+```bash
+c_instance.preprocess(1100)
+```
+
+and for GCM you should pass the instance of GCParameters class, actual order of the model and the path to the preprocessed data obtained from preprocess function.
+
+```bash
+c_instance.GCM(GCParameters_initialized_instance, actual_model_order, path_of_the_preprocessed_data)
+```
+
+ For example, you can use it as follow:
+
+```bash
+c_instance.GCM(gc_instance, 20, '/Documents/out/')
+```
+
 ## License
 
 GNU GENERAL PUBLIC LICENSE

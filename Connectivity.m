@@ -59,8 +59,8 @@ classdef Connectivity
             end
         end
 
-        function GCM(obj, GC_param_obj, actual_model_order, preprocessed_data)
-            listOfsubjs = dir(append(preprocessed_data, '*.mat'));
+        function GCM(obj, GC_param_obj, actual_model_order, preprocessed_data_path)
+            listOfsubjs = dir(append(preprocessed_data_path, '*.mat'));
             GC3DMat = nan(3, 3, length(obj.sub_range));
             
             for n = 1 : length(listOfsubjs)
