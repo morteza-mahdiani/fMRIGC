@@ -23,11 +23,11 @@ gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tsta
 
 The parameters are:
 
-- **ntrials**&nbsp;&nbsp;&nbsp;&nbsp;number of trials
-- **nobs**&nbsp;&nbsp;&nbsp;&nbsp;number of observations per trial
-- **regmode**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
-- **icregmode**&emsp;&emsp;&emsp;&emsp;information criteria regression mode ('OLS', 'LWR' or empty for default)
-- **morder**&emsp;&emsp;&emsp;&emsp;model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
+- **ntrials** &nbsp;&nbsp;&nbsp;&nbsp;number of trials
+- **nobs** &nbsp;&nbsp;&nbsp;&nbsp;number of observations per trial
+- **regmode** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
+- **icregmode** &emsp;&emsp;&emsp;&emsp;information criteria regression mode ('OLS', 'LWR' or empty for default)
+- **morder** &emsp;&emsp;&emsp;&emsp;model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
 - **momax**       &emsp;&emsp;maximum model order for model order estimation
 - **tstat**       &emsp;&emsp;statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
 - **alpha**       &emsp;&emsp;significance level for significance test
