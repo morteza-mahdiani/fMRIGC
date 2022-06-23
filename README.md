@@ -23,7 +23,7 @@ gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tsta
 
 The parameters are:
 
-- **ntrials**
+- **ntrials**<br>
 	-number of trials
 - **nobs**
 	-number of observations per trial
