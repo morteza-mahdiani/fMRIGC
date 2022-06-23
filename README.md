@@ -23,16 +23,16 @@ gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tsta
 
 The parameters are:
 
-- ntrials     % number of trials
-- nobs        % number of observations per trial
-- regmode     % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
-- icregmode   % information criteria regression mode ('OLS', 'LWR' or empty for default)
-- morder      % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
-- momax       % maximum model order for model order estimation
-- tstat       % statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
-- alpha       % significance level for significance test
-- mhtc        % multiple hypothesis test correction (see routine 'significance')
-- seed        % random seed (0 for unseeded)
+- **ntrials**     *Tabspace* *Tabspace* % number of trials
+- **nobs**        *Tabspace* *Tabspace* % number of observations per trial
+- **regmode**     *Tabspace* *Tabspace* % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
+- **icregmode**   *Tabspace* *Tabspace* % information criteria regression mode ('OLS', 'LWR' or empty for default)
+- **morder**      *Tabspace* *Tabspace* % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
+- **momax**       *Tabspace* *Tabspace* % maximum model order for model order estimation
+- **tstat**       *Tabspace* *Tabspace* % statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
+- **alpha**       *Tabspace* *Tabspace* % significance level for significance test
+- **mhtc**        *Tabspace* *Tabspace* % multiple hypothesis test correction (see routine 'significance')
+- **seed**        *Tabspace* *Tabspace* % random seed (0 for unseeded)
 
 For example we can set them like this:
 
@@ -48,13 +48,13 @@ inst = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs, path_to
 
 The parameters are:
 
-- pathOfData		% path to the nifti files of fMRI data
-- pathOfMasks		% path to the masks that we want to apply on fMRI data
-- outputPath		% path to a directory for storing the outputs
-- fID     		% the index of the first subject in the nifti files
-- lID 			% the index of the last subject in the nifti files
-- ROIs 			% the resions that we want to use for masking input data
-- path_to_MVGC 	% path to the MVGC toolbox root in our local device
+- **pathOfData**		% path to the nifti files of fMRI data
+- **pathOfMasks**		% path to the masks that we want to apply on fMRI data
+- **outputPath**		% path to a directory for storing the outputs
+- **fID**     		% the index of the first subject in the nifti files
+- **lID** 			% the index of the last subject in the nifti files
+- **ROIs** 			% the resions that we want to use for masking input data
+- **path_to_MVGC** 	% path to the MVGC toolbox root in our local device
 
 For example we can set them like this:
 
