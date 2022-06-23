@@ -47,29 +47,36 @@ The parameters are:
 For example we can set them like this:
 
 ```bash
-gcInst = GCParameters(1,1100,'OLS', 'LWR', 'AIC', 20, 'F', 0.05, 'FDR', 0)
+gc_instance = GCParameters(1,1100,'OLS', 'LWR', 'AIC', 20, 'F', 0.05, 'FDR', 0)
 ```
 
 Secondly we need to create an instance for Connectivity class by calling its constructor as below:
 
 ```bash
-inst = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs, path_to_MVGC)
+c_instance = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs, path_to_MVGC)
 ```
 
 The parameters are:
 
-- **pathOfData**		% path to the nifti files of fMRI data
-- **pathOfMasks**		% path to the masks that we want to apply on fMRI data
-- **outputPath**		% path to a directory for storing the outputs
-- **fID**     		% the index of the first subject in the nifti files
-- **lID** 			% the index of the last subject in the nifti files
-- **ROIs** 			% the resions that we want to use for masking input data
-- **path_to_MVGC** 	% path to the MVGC toolbox root in our local device
+- **pathOfData**
+	- path to the nifti files of fMRI data
+- **pathOfMasks**
+	- path to the masks that we want to apply on fMRI data
+- **outputPath**
+	- path to a directory for storing the outputs
+- **fID** 
+	- the index of the first subject in the nifti files
+- **lID**
+	- the index of the last subject in the nifti files
+- **ROIs**
+	- the resions that we want to use for masking input data
+- **path_to_MVGC**
+	- path to the MVGC toolbox root in our local device
 
 For example we can set them like this:
 
 ```bash
-inst = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox' 
+c_instance = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox' 
 ```
 
 ## License
