@@ -23,16 +23,16 @@ gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tsta
 
 The parameters are:
 
-- **ntrials**&emsp;number of trials
-- **nobs**        		% number of observations per trial
-- **regmode**     		% VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
-- **icregmode**   *Tabspace* *Tabspace* % information criteria regression mode ('OLS', 'LWR' or empty for default)
-- **morder**      *Tabspace* *Tabspace* % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
-- **momax**       *Tabspace* *Tabspace* % maximum model order for model order estimation
-- **tstat**       *Tabspace* *Tabspace* % statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
-- **alpha**       *Tabspace* *Tabspace* % significance level for significance test
-- **mhtc**        *Tabspace* *Tabspace* % multiple hypothesis test correction (see routine 'significance')
-- **seed**        *Tabspace* *Tabspace* % random seed (0 for unseeded)
+- **ntrials** 	  &emsp;&emsp;number of trials
+- **nobs**        &emsp;&emsp;number of observations per trial
+- **regmode**     &emsp;&emsp;VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
+- **icregmode**   &emsp;&emsp;information criteria regression mode ('OLS', 'LWR' or empty for default)
+- **morder**      &emsp;&emsp;model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
+- **momax**       &emsp;&emsp;maximum model order for model order estimation
+- **tstat**       &emsp;&emsp;statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
+- **alpha**       &emsp;&emsp;significance level for significance test
+- **mhtc**        &emsp;&emsp;multiple hypothesis test correction (see routine 'significance')
+- **seed**        &emsp;&emsp;random seed (0 for unseeded)
 
 For example we can set them like this:
 
