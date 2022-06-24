@@ -1,5 +1,6 @@
 classdef Connectivity
     %Summary of this class
+    % test comment JW
     properties
         inputPathOfData
         inputPathOfMasks
