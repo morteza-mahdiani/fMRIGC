@@ -1,7 +1,7 @@
 # Connectivity
 _Investigating the connectivity of human brain's recorded signals_
 
-The first version of the code was implemented by [Jon Walbrin](https://orcid.org/0000-0001-9740-4471) and [Morteza Mahdiani](https://morteza-mahdiani.github.io/) at [PROACTION Laboratory](https://proactionlab.fpce.uc.pt/).
+The first version of the code was implemented by [Morteza Mahdiani](https://morteza-mahdiani.github.io/) and [Jon Walbrin](https://orcid.org/0000-0001-9740-4471) at [PROACTION Laboratory](https://proactionlab.fpce.uc.pt/).
 
 ## Description
 This repository provides an object oriented code for investigating the directed connectivity between signals obtained from human brain fMRI data.
@@ -102,6 +102,9 @@ c_instance.GCM(GCParameters_initialized_instance, actual_model_order, path_of_th
 ```bash
 c_instance.GCM(gc_instance, 20, '/Documents/out/')
 ```
+
+The 3D output matrix of Granger Causality analysis(region by region by number of subjects) after Z conversion will be stored in the 'GCMOutput' folder located in the output directory. Also, you will find the preprocessed data there and you should use them as when calling GCM function.
+
 
 ## License
 

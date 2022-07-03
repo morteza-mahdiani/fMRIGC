@@ -17,6 +17,12 @@ classdef Connectivity
             obj.inputPathOfData = pathOfData;
             obj.inputPathOfMasks = pathOfMasks;
             obj.outputPath = outputPath;
+
+            % check whether output directory exists or not
+            obj.outputPath = fullfile(obj.outputPath, '/');
+            if ~exist(obj.outputPath, 'dir')
+               mkdir(obj.outputPath);
+            end
             obj.first_sub_ID = fID;
             obj.last_sub_ID = lID;
             obj.sub_range = (obj.first_sub_ID: obj.last_sub_ID);
@@ -27,9 +33,6 @@ classdef Connectivity
         end
         function preprocess(obj, TCDataLength)
             seedStr = '%s_%s_10mm_Sphere.nii';
-            %regions = {'lPMTG','lMFus','lIPL'};
-            %regions = {'rOFA','rFFA','rSTSF'};
-            %TCDataLength = 1100;
 
             % prepare the proposed path
             for sbj = obj.sub_range
@@ -53,15 +56,28 @@ classdef Connectivity
                     allSeedTCMat(:,sd) = mean(ds_seed.samples,2);
                 end
 
-                % save data
+                % save the preprocessed data
                 data = transpose(allSeedTCMat);
-                save(append(append(obj.outputPath, cSubj), '.mat'),'data')
+                save(append(obj.outputPath, append(cSubj, '.mat')), 'data');
             end
         end
 
         function GCM(obj, GC_param_obj, actual_model_order, preprocessed_data_path)
-            listOfsubjs = dir(append(preprocessed_data_path, '*.mat'));
-            GC3DMat = nan(3, 3, length(obj.sub_range));
+            pathOfData = fullfile(preprocessed_data_path, '/');
+
+            % check whether the path directory exists or not 
+            if ~isfolder(pathOfData)
+                return;
+            end
+
+            listOfsubjs = dir(append(pathOfData, '*.mat'));
+
+            % check whether there is preprocessed data or not
+            if isempty(listOfsubjs)
+                return;
+            end
+
+            GC3DMat = nan(length(obj.regions), length(obj.regions), length(obj.sub_range));
             
             for n = 1 : length(listOfsubjs)
                 %% Parameters
@@ -81,7 +97,6 @@ classdef Connectivity
 
                 % Residuals covariance matrix.
                 SIGT = eye(nvars);
-                fprintf('\n ______________________________________________________________________');
                 fprintf('\n');
                 disp(append(listOfsubjs(n).folder, '/', listOfsubjs(n).name));
                 fprintf('\n');
@@ -165,15 +180,24 @@ classdef Connectivity
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
             end
 
-            save(append(append(obj.outputPath, 'GC3Doutput_faceAreas'), '.mat'),'GC3DMat')
+            % save data
+            outPath = fullfile(obj.outputPath, 'GCMOutput', '/');
+
+            % check whether the path exists or not
+            if ~exist(outPath, 'dir')
+                mkdir(outPath);
+            end
+            save(append(outPath, 'GC3DMat.mat'),'GC3DMat');
         end
     end
 
 
     methods(Static)
         function setPath(path_to_MVGC)
+            pathOfMVGC = fullfile(path_to_MVGC, '/');
+
             % Add mvgc root directory and appropriate subdirectories to path
-            mvgc_root = fileparts(mfilename(path_to_MVGC)); % directory containing this file
+            mvgc_root = fileparts(mfilename(pathOfMVGC)); % directory containing this file
 
             % essentials
             addpath(mvgc_root);
