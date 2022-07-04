@@ -173,8 +173,7 @@ classdef Connectivity
     methods(Static)
         function setPath(path_to_MVGC)
             % Add mvgc root directory and appropriate subdirectories to path
-%             mvgc_root = fileparts(mfilename(path_to_MVGC)); % directory containing this file
-            mvgc_root = (path_to_MVGC); % directory containing this file
+            mvgc_root = fileparts(mfilename(path_to_MVGC)); % directory containing this file
 
             % essentials
             addpath(mvgc_root);
