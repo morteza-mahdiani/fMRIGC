@@ -105,6 +105,23 @@ c_instance.GCM(gc_instance, 20, '/Documents/out/')
 
 The 3D output matrix of Granger Causality analysis(region by region by number of subjects) after Z conversion will be stored in the 'GCMOutput' folder located in the output directory. Also, you will find the preprocessed data there and you should use them as when calling GCM function.
 
+## To do
+
+- I'm not sure it's very feasible to always write out .mat time course files during 'preprocessing'; for example, in future analyses, we'll want to run voxel-wise comparisons for 200+ parcels (i.e. nchoosek(200,2) = ~20000 mat files per subject! So I think it is important that we have a separate function that outputs the timecourse data ready for another function that runs MVGC wihtout needing to store the data
+
+- After generating .mat time course files, re-running the GC script will default to taking all available .mat files, rather than those specified when re-running (e.g. if I first ran it with 20 subjects, then later specify only for 3 subjects, it runs for all 20 rather than the 3 I specify)
+
+- My feeling is that perhaps this would be easiest to implement as a series of stand alone functions rather than as a single script (e.g. like the cosmo MVPA toolbox, and most other matlab toolboxes where each function is a separate .m file); I think the logic would certainly be a little more intuitive to MATLAB users and it's a little easier to inspect the outputs of each function rather than having everything wrapped up in this way
+
+- GC3DMat - last dimension of 3D mat is greater than n subjects (perhaps because i ran it with 2 subjects missing (i.e. subj 4 and 7); is it better to pre-allocate the size of this, or include some other output (e.g. subject names) that allows for easy understanding of which matrix corresponds to a particular subject
+
+- Most of the the z values are negative, try norminv(1-pval) to make the Z scores positive
+
+- We're getting quite a few infinity values (due to pvalues of 0) which are inconveneiently outputted from the mvgc toolbox; can you see if there is a way of returning non-zero values for these (when using mvgc toolbox), so that we can calculate Z-scores from them? 
+
+- can you remind me which axis of the output matrix is which (e.g. are vertical labels describing the causal influence of regions in the lower triangle of the matrix (and horizontal labels are causal for the upper triangle)?
+
+- Perhaps a more intuitive naming of each function (e.g. connectivity is quite vague) 
 
 ## License
 
