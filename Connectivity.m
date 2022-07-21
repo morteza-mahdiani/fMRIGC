@@ -21,7 +21,7 @@ classdef Connectivity
             % check whether output directory exists or not
             obj.outputPath = fullfile(obj.outputPath, '/');
             if ~exist(obj.outputPath, 'dir')
-               mkdir(obj.outputPath);
+                mkdir(obj.outputPath);
             end
             obj.first_sub_ID = fID;
             obj.last_sub_ID = lID;
@@ -65,7 +65,7 @@ classdef Connectivity
         function GCM(obj, GC_param_obj, actual_model_order, preprocessed_data_path)
             pathOfData = fullfile(preprocessed_data_path, '/');
 
-            % check whether the path directory exists or not 
+            % check whether the path directory exists or not
             if ~isfolder(pathOfData)
                 return;
             end
@@ -78,7 +78,7 @@ classdef Connectivity
             end
 
             GC3DMat = nan(length(obj.regions), length(obj.regions), length(obj.sub_range));
-            
+
             for n = 1 : length(listOfsubjs)
                 %% Parameters
                 ntrials   = GC_param_obj.ntrials;     % number of trials
@@ -171,11 +171,11 @@ classdef Connectivity
                 %                 title(['Significant at p = ' num2str(alpha)])
                 %                 fprintf(2,'\nNOTE: no frequency-domain pairwise-conditional causality calculation in GCCA compatibility mode!\n');
                 %                 saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
-                
+
                 %convert p-vals to z score
                 zscore = norminv(pval);
                 GC3DMat( :,: ,n)= zscore;
-                
+
                 %Free up used memory for other loops
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
             end
@@ -189,6 +189,38 @@ classdef Connectivity
             end
             save(append(outPath, 'GC3DMat.mat'),'GC3DMat');
         end
+        function visualize(obj, path_to_data, mode, subjectID)
+            if isfile(path_to_data)
+                % load data
+                conData = load(path_to_data);
+                dataForVisualization = conData.GC3DMat;
+
+                % eliminate NaN and INF datapoints
+                dataForVisualization(isinf(dataForVisualization) ...
+                    | isnan(dataForVisualization))= 0;
+
+                if mode == 'm'
+                    circularGraph(mean(dataForVisualization, 3), 'Label',obj.regions);
+
+                elseif mode == 'sn' 
+                    if (1 <= subjectID) && (subjectID <= size(dataForVisualization, 3))
+                        circularGraph(dataForVisualization(:,:,subjectID), 'Label',obj.regions);
+                    else
+                        disp('Enter a valid subject ID!');
+                        return
+                    end
+                else
+                    disp("Mode should be 'm' or 'sn'!")
+                    return
+                end
+
+            else
+                disp("The intended file for visualizayion doesn't exist!");
+                return
+            end
+
+        end
+
     end
 
 
