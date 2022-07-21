@@ -103,7 +103,32 @@ c_instance.GCM(GCParameters_initialized_instance, actual_model_order, path_of_th
 c_instance.GCM(gc_instance, 20, '/Documents/out/')
 ```
 
-The 3D output matrix of Granger Causality analysis(region by region by number of subjects) after Z conversion will be stored in the 'GCMOutput' folder located in the output directory. Also, you will find the preprocessed data there and you should use them as when calling GCM function.
+The 3D output matrix of Granger Causality analysis(region by region by number of subjects) after Z conversion will be stored in the 'GCMOutput' folder located in the output directory. Also, you will find the preprocessed data there and you should use them as when calling GCM function. You can visualize it with the following function:
+
+```bash
+c_instance.visualize(obj, path_to_data, mode, subjectID)
+```
+
+The parameters are:
+
+- **path_to_data**
+	- path to the 3D output matrix of connectivity function
+- **mode**
+	- the mode can be 'm' or 'sn' that represents whether you need to have the mean of all subjects results or just an specific subject result. If you set mode as 'sn', you should then provide the subject number. 
+- **subjectID**
+	- the ID of the subject. Set it when the mode is 'sn'.
+
+For example, set parameters as below:
+
+```bash
+c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','m') 
+```
+
+Or if you want to visualize the results of a specific subject, provide its ID like:
+
+```bash
+c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2) 
+```
 
 ## To do
 
