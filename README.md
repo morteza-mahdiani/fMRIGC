@@ -12,6 +12,7 @@ This repository provides an object oriented code for investigating the directed 
 ](https://www.mathworks.com/matlabcentral/fileexchange/78727-the-multivariate-granger-causality-mvgc-toolbox)
 * [Statistics and Machine Learning Toolbox
 ](https://www.mathworks.com/products/statistics.html)
+* [circularGraph](https://www.mathworks.com/matlabcentral/fileexchange/48576-circulargraph/)
 
 
 ### Quick Guide
