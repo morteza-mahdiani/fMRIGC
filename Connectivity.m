@@ -173,7 +173,7 @@ classdef Connectivity
                 %                 saveas(gcf,dirTosbj+'/'+string(name(1))+'.png')
 
                 %convert p-vals to z score
-                zscore = norminv(pval);
+                zscore = norminv(1 - pval );
                 GC3DMat( :,: ,n)= zscore;
 
                 %Free up used memory for other loops
