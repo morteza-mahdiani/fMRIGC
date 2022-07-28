@@ -6,6 +6,7 @@ classdef Connectivity
         outputPath
         first_sub_ID
         last_sub_ID
+%         prepDataList = containers.Map
     end
     properties
         sub_range
@@ -31,7 +32,7 @@ classdef Connectivity
             obj.setPath(path_to_MVGC);
 
         end
-        function preprocess(obj, TCDataLength)
+        function preprocess(obj, TCDataLength, saveFlag)
             seedStr = '%s_%s_10mm_Sphere.nii';
 
             % prepare the proposed path
@@ -55,10 +56,14 @@ classdef Connectivity
                     ds_seed = cosmo_remove_useless_data(ds_seed);
                     allSeedTCMat(:,sd) = mean(ds_seed.samples,2);
                 end
+                % store preprocessed data
+%                 obj.prepDataList{end + 1} = transpose(allSeedTCMat);
 
-                % save the preprocessed data
-                data = transpose(allSeedTCMat);
-                save(append(obj.outputPath, append(cSubj, '.mat')), 'data');
+
+                % save the preprocessed data if save flag is true
+                if saveFlag == true
+                    save(append(obj.outputPath, append(cSubj, '.mat')), 'obj.prepData');
+                end
             end
         end
 
@@ -188,6 +193,22 @@ classdef Connectivity
                 mkdir(outPath);
             end
             save(append(outPath, 'GC3DMat.mat'),'GC3DMat');
+        end
+
+        function GCTensor(obj, GC_param_obj, actual_model_order, preprocessed_data_path, loadFlag)
+            if nargin == 2
+                preprocessed_data_path = nan;
+                loadFlag = false;
+            elseif nargin == 3
+                loadFlag = true;
+            end
+
+            if loadFlag == true
+                obj.GCM(GC_param_obj, actual_model_order, preprocessed_data_path)
+            elseif loadFlag == false
+                %obj.GCM
+            end
+
         end
         function visualize(obj, path_to_data, mode, subjectID)
             if isfile(path_to_data)
