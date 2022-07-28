@@ -141,8 +141,6 @@ c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2)
 
 - GC3DMat - last dimension of 3D mat is greater than n subjects (perhaps because i ran it with 2 subjects missing (i.e. subj 4 and 7); is it better to pre-allocate the size of this, or include some other output (e.g. subject names) that allows for easy understanding of which matrix corresponds to a particular subject
 
-- Most of the the z values are negative, try norminv(1-pval) to make the Z scores positive
-
 - We're getting quite a few infinity values (due to pvalues of 0) which are inconveneiently outputted from the mvgc toolbox; can you see if there is a way of returning non-zero values for these (when using mvgc toolbox), so that we can calculate Z-scores from them? 
 
 - can you remind me which axis of the output matrix is which (e.g. are vertical labels describing the causal influence of regions in the lower triangle of the matrix (and horizontal labels are causal for the upper triangle)?
