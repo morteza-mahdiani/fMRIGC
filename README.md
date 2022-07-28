@@ -143,8 +143,6 @@ c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2)
 
 - We're getting quite a few infinity values (due to pvalues of 0) which are inconveneiently outputted from the mvgc toolbox; can you see if there is a way of returning non-zero values for these (when using mvgc toolbox), so that we can calculate Z-scores from them? 
 
-- can you remind me which axis of the output matrix is which (e.g. are vertical labels describing the causal influence of regions in the lower triangle of the matrix (and horizontal labels are causal for the upper triangle)?
-
 ## License
 
 GNU GENERAL PUBLIC LICENSE
