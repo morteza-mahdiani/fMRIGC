@@ -145,8 +145,6 @@ c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2)
 
 - can you remind me which axis of the output matrix is which (e.g. are vertical labels describing the causal influence of regions in the lower triangle of the matrix (and horizontal labels are causal for the upper triangle)?
 
-- Perhaps a more intuitive naming of each function (e.g. connectivity is quite vague) 
-
 ## License
 
 GNU GENERAL PUBLIC LICENSE
