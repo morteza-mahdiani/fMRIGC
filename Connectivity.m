@@ -58,11 +58,13 @@ classdef Connectivity
                 end
                 % store preprocessed data
 %                 obj.prepDataList{end + 1} = transpose(allSeedTCMat);
-
+               
 
                 % save the preprocessed data if save flag is true
                 if saveFlag == true
-                    save(append(obj.outputPath, append(cSubj, '.mat')), 'obj.prepData');
+                    data = transpose(allSeedTCMat);
+                    save(append(obj.outputPath, append(cSubj, '.mat')), 'data');
+
                 end
             end
         end
@@ -195,12 +197,15 @@ classdef Connectivity
             save(append(outPath, 'GC3DMat.mat'),'GC3DMat');
         end
 
-        function GCTensor(obj, GC_param_obj, actual_model_order, preprocessed_data_path, loadFlag)
-            if nargin == 2
+        function GCTensor(obj, GC_param_obj, actual_model_order, preprocessed_data_path)
+            if nargin == 3
                 preprocessed_data_path = nan;
                 loadFlag = false;
-            elseif nargin == 3
+            elseif nargin == 4
                 loadFlag = true;
+            else
+                disp('Check the number of input arguments');
+                return
             end
 
             if loadFlag == true
@@ -208,7 +213,7 @@ classdef Connectivity
             elseif loadFlag == false
                 %obj.GCM
             end
-
+           
         end
         function visualize(obj, path_to_data, mode, subjectID)
             if isfile(path_to_data)
