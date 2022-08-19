@@ -132,9 +132,6 @@ c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2)
 ```
 
 ## To do
-
-- I'm not sure it's very feasible to always write out .mat time course files during 'preprocessing'; for example, in future analyses, we'll want to run voxel-wise comparisons for 200+ parcels (i.e. nchoosek(200,2) = ~20000 mat files per subject! So I think it is important that we have a separate function that outputs the timecourse data ready for another function that runs MVGC wihtout needing to store the data
-
 - After generating .mat time course files, re-running the GC script will default to taking all available .mat files, rather than those specified when re-running (e.g. if I first ran it with 20 subjects, then later specify only for 3 subjects, it runs for all 20 rather than the 3 I specify)
 
 - My feeling is that perhaps this would be easiest to implement as a series of stand alone functions rather than as a single script (e.g. like the cosmo MVPA toolbox, and most other matlab toolboxes where each function is a separate .m file); I think the logic would certainly be a little more intuitive to MATLAB users and it's a little easier to inspect the outputs of each function rather than having everything wrapped up in this way
