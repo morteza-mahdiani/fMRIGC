@@ -132,13 +132,7 @@ c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2)
 ```
 
 ## To do
-- After generating .mat time course files, re-running the GC script will default to taking all available .mat files, rather than those specified when re-running (e.g. if I first ran it with 20 subjects, then later specify only for 3 subjects, it runs for all 20 rather than the 3 I specify)
-
-- My feeling is that perhaps this would be easiest to implement as a series of stand alone functions rather than as a single script (e.g. like the cosmo MVPA toolbox, and most other matlab toolboxes where each function is a separate .m file); I think the logic would certainly be a little more intuitive to MATLAB users and it's a little easier to inspect the outputs of each function rather than having everything wrapped up in this way
-
-- GC3DMat - last dimension of 3D mat is greater than n subjects (perhaps because i ran it with 2 subjects missing (i.e. subj 4 and 7); is it better to pre-allocate the size of this, or include some other output (e.g. subject names) that allows for easy understanding of which matrix corresponds to a particular subject
-
-- We're getting quite a few infinity values (due to pvalues of 0) which are inconveneiently outputted from the mvgc toolbox; can you see if there is a way of returning non-zero values for these (when using mvgc toolbox), so that we can calculate Z-scores from them? 
+?
 
 ## License
 
