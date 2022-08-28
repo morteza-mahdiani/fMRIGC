@@ -7,15 +7,34 @@ classdef Connectivity
         first_sub_ID
         last_sub_ID
         prepDataList
+        lengthOfTC
+        regionWise = false;
         
     end
+
     properties
         sub_range
         regions
     end
 
     methods
-        function obj = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs, path_to_MVGC)
+        
+        function obj = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, ...
+                regionWise, ROIs)
+            if nargin == 6
+                obj.regions = nan;
+                obj.regionWise = false;
+            elseif nargin == 7
+                disp('Enter the ROIs');
+                return
+            elseif nargin == 8
+                obj.regionWise = regionWise;
+                obj.regions = ROIs;
+            else
+                disp('Check the number of input arguments');
+                return
+            end
+
             obj.inputPathOfData = pathOfData;
             obj.inputPathOfMasks = pathOfMasks;
             obj.outputPath = outputPath;
@@ -28,15 +47,21 @@ classdef Connectivity
             obj.first_sub_ID = fID;
             obj.last_sub_ID = lID;
             obj.sub_range = (obj.first_sub_ID: obj.last_sub_ID);
-            obj.regions = ROIs;
 
             obj.prepDataList = containers.Map;
+            obj.lengthOfTC = containers.Map;
 
             obj.setPath(path_to_MVGC);
 
         end
-        function preprocess(obj, TCDataLength, saveFlag)
+        
+        function regionWisePreprocess(obj, TCDataLength, saveFlag)
+            if obj.regionWise == false
+                disp('Region-wise flag has set to be false. Create the instance again and set it true!')
+                return
+            end
             seedStr = '%s_%s_10mm_Sphere.nii';
+            obj.lengthOfTC('length') = size(obj.regions,2);
 
             % prepare the proposed path
             for sbj = obj.sub_range
@@ -74,7 +99,46 @@ classdef Connectivity
             end
         end
 
-        function GCMLoad(obj, GC_param_obj, actual_model_order, preprocessed_data_path)
+        function voxelWisePreprocess(obj, saveFlag)
+            if obj.regionWise == true
+                disp('Region-wise flag has set to be true. Create the instance again and set it false!')
+                return
+            end
+
+            % prepare the proposed path
+            for sbj = obj.sub_range
+                cSubj = sprintf('sub-%1.2d',sbj);
+                cSubjTC = fullfile(obj.inputPathOfData,cSubj,'/');
+                files = dir(cSubjTC);
+                flag = [files.isdir];
+                if isempty(flag),continue,end
+                fileName = files(~flag).name;
+                cSubjTC = append(cSubjTC, fileName);
+                if ~exist(cSubjTC),continue,end
+
+                % use cosmo to load data
+                ds_seed = cosmo_fmri_dataset(cSubjTC);
+                ds_seed = cosmo_remove_useless_data(ds_seed);
+
+                allSeedTCMat = nan(size(ds_seed.samples,1),1);
+                allSeedTCMat(:) = mean(ds_seed.samples,2);
+                obj.lengthOfTC('length') = size(ds_seed.samples,2);
+
+                % store preprocessed data
+                if saveFlag == false
+                    obj.prepDataList(cSubj) = transpose(allSeedTCMat);
+                end
+               
+                % save the preprocessed data if save flag is true
+                if saveFlag == true
+                    data = transpose(allSeedTCMat);
+                    save(append(obj.outputPath, append(cSubj, '.mat')), 'data');
+                end
+            end
+        end
+
+        function GCMLoad(obj, GC_param_obj, actual_model_order, preprocessed_data_path) 
+            
             pathOfData = fullfile(preprocessed_data_path, '/');
 
             % check whether the path directory exists or not
@@ -89,7 +153,7 @@ classdef Connectivity
                 return;
             end
 
-            GC3DMat = nan(length(obj.regions), length(obj.regions), length(obj.sub_range));
+            GC3DMat = nan(obj.lengthOfTC('length'), obj.lengthOfTC('length'), length(obj.sub_range));
 
             for n = 1 : length(listOfsubjs)
                 %% Parameters
@@ -105,7 +169,7 @@ classdef Connectivity
                 seed      = GC_param_obj.seed;      % random seed (0 for unseeded)
 
                 %% Generate VAR test data
-                nvars = length(obj.regions); % number of variables
+                nvars = obj.lengthOfTC('length'); % number of variables
 
                 % Residuals covariance matrix.
                 SIGT = eye(nvars);
@@ -210,7 +274,7 @@ classdef Connectivity
             end
 
             numberOfSubjects = length(obj.sub_range);
-            GC3DMat = nan(length(obj.regions), length(obj.regions), numberOfSubjects);
+            GC3DMat = nan(obj.lengthOfTC('length'), obj.lengthOfTC('length'), numberOfSubjects);
 
             counter = 1;
             for k = keys(obj.prepDataList)
@@ -227,7 +291,7 @@ classdef Connectivity
                 seed      = GC_param_obj.seed;      % random seed (0 for unseeded)
 
                 %% Generate VAR test data
-                nvars = length(obj.regions); % number of variables
+                nvars = obj.lengthOfTC('length'); % number of variables
 
                 % Residuals covariance matrix.
                 SIGT = eye(nvars);
@@ -348,7 +412,8 @@ classdef Connectivity
             end
            
         end
-        function visualize(obj, path_to_data, mode, subjectID)
+        
+        function regionWiseVisualization(obj, path_to_data, mode, subjectID)
             if isfile(path_to_data)
                 % load data
                 conData = load(path_to_data);
