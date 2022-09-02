@@ -1,4 +1,4 @@
-# Connectivity
+# fMRIGC
 _Investigating the connectivity of human brain's recorded signals_
 
 The first version of the code was implemented by [Morteza Mahdiani](https://morteza-mahdiani.github.io/) and [Jon Walbrin](https://orcid.org/0000-0001-9740-4471) at [PROACTION Laboratory](https://proactionlab.fpce.uc.pt/).
