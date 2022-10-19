@@ -51,10 +51,10 @@ For example we can set them like this:
 gc_instance = GCParameters(1,1100,'OLS', 'LWR', 'AIC', 20, 'F', 0.05, 'FDR', 0)
 ```
 
-Secondly we need to create an instance for Connectivity class by calling its constructor as below:
+Secondly we need to create an instance for FMRIGC class by calling its constructor as below:
 
 ```bash
-c_instance = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, region_wise_flag, ROIs)
+c_instance = FMRIGC(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, region_wise_flag, ROIs)
 ```
 
 The parameters are:
@@ -79,10 +79,16 @@ The parameters are:
 For example we can set them like this:
 
 ```bash
-c_instance = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox')
+inst = FMRIGC('/Users/saminjamshidi/Documents/condata/ResidualTimeCourse_THBFP_FIR','/Users/saminjamshidi/Documents/condata/SubjReg_SearchSpaces_GM_ASMasked','/Users/saminjamshidi/Documents/condata/out', 8,9,'/Users/saminjamshidi/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox')
 ```
 
-Finally you should use preprocess and GCM methods for the initialized instance of the Connectivity class! For preprocess function you should pass the number of trials as follow:
+or 
+
+```bash
+inst = FMRIGC('/Users/saminjamshidi/Documents/condata/ResidualTimeCourse_THBFP_FIR','/Users/saminjamshidi/Documents/condata/SubjReg_SearchSpaces_GM_ASMasked','/Users/saminjamshidi/Documents/condata/out', 8,9,'/Users/saminjamshidi/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox', true, {'rOFA','rFFA','rSTSF'})
+```
+
+Finally you should use preprocess and GCM methods for the initialized instance of the **FMRIGC** class! For preprocess function you should pass the number of trials as follow:
 
 Then the preprocess phase will start by calling whether **regionWisePreprocess** or **voxelWisePreprocess** functions. Regarding the **regionWisePreprocess** function you need to use the following parameters:
 
