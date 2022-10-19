@@ -1,25 +1,34 @@
-classdef Connectivity
-    %Summary of this class
+% fMRIGC is a tool for granger causality analysis in fMRI data.
+%
+% fMRIGC investigates the connectivity in time courses of
+% the fMRI data in both regio-wise and voxel-wise analysis modes.
+% 
+% Author: Morteza Mahdiani, 2022, m72.morteza@gmail.com
+% Last update: Morteza Mahdiani, 19/10/2022, m72.morteza@gmail.com
+% ____________________________________________________________________
+
+classdef FMRIGC
+    % the body of main class for granger causality
     properties
-        inputPathOfData
-        inputPathOfMasks
-        outputPath
-        first_sub_ID
-        last_sub_ID
-        prepDataList
-        lengthOfTC
-        regionWise = false;
-        
+        inputPathOfData         % path to the dataset we want to work on
+        inputPathOfMasks        % path to the masks we want to apply on datasets
+        outputPath              % output directory that will be used for storing results and mid-level processed data
+        first_sub_ID            % ID of the first subject in ascending order
+        last_sub_ID             % ID of the last subject in descending order
+        prepDataList            % list of pre-processed data for further analysis
+        lengthOfTC              % number of time-courses to be analysed for granger causality
+        regionWise = false;     % flag to select region-wise or voxel-wise data analysis
+
     end
 
     properties
-        sub_range
-        regions
+        sub_range               % range including the first and last subject ID
+        regions                 % regions that will be considerd for granger causality through region-wise mode
     end
 
     methods
-        
-        function obj = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, ...
+
+        function obj = FMRIGC(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, ...
                 regionWise, ROIs)
             if nargin == 6
                 obj.regions = nan;
@@ -33,6 +42,7 @@ classdef Connectivity
             else
                 disp('Check the number of input arguments');
                 return
+
             end
 
             obj.inputPathOfData = pathOfData;
@@ -54,7 +64,7 @@ classdef Connectivity
             obj.setPath(path_to_MVGC);
 
         end
-        
+
         function regionWisePreprocess(obj, TCDataLength, saveFlag)
             if obj.regionWise == false
                 disp('Region-wise flag has set to be false. Create the instance again and set it true!')
@@ -89,7 +99,7 @@ classdef Connectivity
                     obj.prepDataList(cSubj) = transpose(allSeedTCMat);
 
                 end
-               
+
                 % save the preprocessed data if save flag is true
                 if saveFlag == true
                     data = transpose(allSeedTCMat);
@@ -128,7 +138,7 @@ classdef Connectivity
                 if saveFlag == false
                     obj.prepDataList(cSubj) = transpose(allSeedTCMat);
                 end
-               
+
                 % save the preprocessed data if save flag is true
                 if saveFlag == true
                     data = transpose(allSeedTCMat);
@@ -137,8 +147,8 @@ classdef Connectivity
             end
         end
 
-        function GCMLoad(obj, GC_param_obj, actual_model_order, preprocessed_data_path) 
-            
+        function GCMLoad(obj, GC_param_obj, actual_model_order, preprocessed_data_path)
+
             pathOfData = fullfile(preprocessed_data_path, '/');
 
             % check whether the path directory exists or not
@@ -300,7 +310,7 @@ classdef Connectivity
                 fprintf('\n');
                 data = obj.prepDataList(k{1});
                 ptic('\n*** var_to_tsdata... ');
-%                 load(sbj);
+                %                 load(sbj);
                 X = data;
                 ptoc;
                 %name = split(listOfsubjs(n).name, '.');
@@ -374,11 +384,11 @@ classdef Connectivity
                 zscore = norminv(1 - pval );
 
                 GC3DMat( :,: ,counter)= zscore;
-                counter = counter + 1; 
-%                 if counter > numberOfSubjects
-%                     disp('Subject range is not consistent with number of subjects!')
-%                     return
-%                 end
+                counter = counter + 1;
+                %                 if counter > numberOfSubjects
+                %                     disp('Subject range is not consistent with number of subjects!')
+                %                     return
+                %                 end
 
                 %Free up used memory for other loops
                 clear bmo_BIC bmo_AIC X figure(1) figure(2);
@@ -410,11 +420,11 @@ classdef Connectivity
             elseif loadFlag == false
                 obj.GCM(GC_param_obj, actual_model_order)
             end
-           
+
         end
-        
+
         function regionWiseVisualization(obj, path_to_data, mode, subjectID)
-            if isfile(path_to_data)
+            if isfile(path_to_data) && obj.regionWise == 1
                 % load data
                 conData = load(path_to_data);
                 dataForVisualization = conData.GC3DMat;
@@ -426,7 +436,7 @@ classdef Connectivity
                 if mode == 'm'
                     circularGraph(mean(dataForVisualization, 3), 'Label',obj.regions);
 
-                elseif mode == 'sn' 
+                elseif mode == 'sn'
                     if (1 <= subjectID) && (subjectID <= size(dataForVisualization, 3))
                         circularGraph(dataForVisualization(:,:,subjectID), 'Label',obj.regions);
                     else
