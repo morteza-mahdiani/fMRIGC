@@ -1,5 +1,11 @@
+% GCParameters is a class for fMRIGC tool parameters.
+% 
+% Author: Morteza Mahdiani, 2022, m72.morteza@gmail.com
+% Last update: Morteza Mahdiani, 19/10/2022, m72.morteza@gmail.com
+% ____________________________________________________________________
+
 classdef GCParameters
-    %Summary of this class
+    % class for the parameters that are needed through granger causality analysis
     properties
         ntrials   = 1;      % number of trials
         nobs      = 1100;   % number of observations per trial

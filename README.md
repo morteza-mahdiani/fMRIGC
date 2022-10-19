@@ -54,7 +54,7 @@ gc_instance = GCParameters(1,1100,'OLS', 'LWR', 'AIC', 20, 'F', 0.05, 'FDR', 0)
 Secondly we need to create an instance for Connectivity class by calling its constructor as below:
 
 ```bash
-c_instance = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, ROIs, path_to_MVGC)
+c_instance = Connectivity(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, region_wise_flag, ROIs)
 ```
 
 The parameters are:
@@ -69,39 +69,75 @@ The parameters are:
 	- the index of the first subject in the nifti files
 - **lID**
 	- the index of the last subject in the nifti files
-- **ROIs**
-	- the resions that we want to use for masking input data
 - **path_to_MVGC**
 	- path to the MVGC toolbox root in our local device
+- **region_wise_flag**
+	- **true** for region-wise and **false** for voxel-wise
+- **ROIs**
+	- the resions that we want to use for masking input data
 
 For example we can set them like this:
 
 ```bash
-c_instance = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox' 
+c_instance = Connectivity('/Documents/ResidualTimeCourse_THBFP_FIR/','/Documents/SubjReg_SearchSpaces_GM_ASMasked/','/Documents/out/', 8,10,{'rOFA','rFFA','rSTSF'},'/Applications/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox')
 ```
 
 Finally you should use preprocess and GCM methods for the initialized instance of the Connectivity class! For preprocess function you should pass the number of trials as follow:
 
+Then the preprocess phase will start by calling whether **regionWisePreprocess** or **voxelWisePreprocess** functions. Regarding the **regionWisePreprocess** function you need to use the following parameters:
+
 ```bash
-c_instance.preprocess(number_of_trials)
+c_instance.regionWisePreprocess(number_of_trials, saving_flag)
 ```
 
-Use a number like:
+For example use it as bellow:
 
 ```bash
-c_instance.preprocess(1100)
+c_instance.regionWisePreprocess(1100, false)
 ```
 
-and for GCM you should pass the instance of GCParameters class, actual order of the model and the path to the preprocessed data obtained from preprocess function.
+or
 
 ```bash
-c_instance.GCM(GCParameters_initialized_instance, actual_model_order, path_of_the_preprocessed_data)
+c_instance.regionWisePreprocess(1100, true)
+```
+
+For **voxelWisePreprocess** function you just need to specify the flag for saving preprocessed data like this:
+
+```bash
+c_instance.voxelWisePreprocess(saving_flag)
+```
+
+For example use it as bellow:
+
+```bash
+c_instance.voxelWisePreprocess(false)
+```
+
+For Granger causality analysis what you need to do is very simple by providing actual model order and also Granger Causality parameters via an instance of **GCParameters** class. However, there is a option to load the preprocessed and stored data from preprocessing stage. For loading preprocessed data you can easily provide the path of the preprocessed data as the final argument of the **GCTensor** function. 
+
+For **GCTensor** you should pass the instance of GCParameters class and actual order of the model.
+
+```bash
+c_instance.GCTensor(GCParameters_initialized_instance, actual_model_order)
 ```
 
  For example, you can use it as follow:
 
 ```bash
-c_instance.GCM(gc_instance, 20, '/Documents/out/')
+c_instance.GCTensor(gc_instance, 20)
+```
+
+For **GCTensor**, when we want to load the preprocessed data from a directory we can also provide the path to the preprocessed data obtained from preprocess stage.
+
+```bash
+c_instance.GCTensor(GCParameters_initialized_instance, actual_model_order, path_of_the_preprocessed_data)
+```
+
+ For example, you can use it as follow:
+
+```bash
+c_instance.GCTensor(gc_instance, 20, '/Documents/out/')
 ```
 
 The 3D output matrix of Granger Causality analysis(region by region by number of subjects) after Z conversion will be stored in the 'GCMOutput' folder located in the output directory. Also, you will find the preprocessed data there and you should use them as when calling GCM function. You can visualize it with the following function:
