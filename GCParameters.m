@@ -8,7 +8,6 @@ classdef GCParameters
     % class for the parameters that are needed through granger causality analysis
     properties
         ntrials   = 1;      % number of trials
-        nobs      = 1100;   % number of observations per trial
         regmode   = 'OLS';  % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
         icregmode = 'LWR';  % information criteria regression mode ('OLS', 'LWR' or empty for default)
         morder    = 'AIC';  % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
@@ -21,9 +20,8 @@ classdef GCParameters
 
     methods
         %class constructor
-        function obj = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tstat, alpha, mhtc, seed)
+        function obj = GCParameters(ntrials, regmode, icregmode, morder, momax, tstat, alpha, mhtc, seed)
             obj.ntrials   = ntrials;
-            obj.nobs      = nobs;
             obj.regmode   = regmode;
             obj.icregmode = icregmode;
             obj.morder    = morder;
