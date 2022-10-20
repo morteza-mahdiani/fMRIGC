@@ -19,15 +19,13 @@ This repository provides an object oriented code for investigating the directed 
 First, you should create an instance of the GCParameters class to set the parameters that are required for granger cuasality analysis obtained by MVGC toolbox as bellow:
 
 ```bash
-gc_instance = GCParameters(ntrials,nobs, regmode, icregmode, morder, momax, tstat, alpha, mhtc, seed);
+gc_instance = GCParameters(ntrials, regmode, icregmode, morder, momax, tstat, alpha, mhtc, seed);
 ```
 
 The parameters are:
 
 - **ntrials**
 	- number of trials
-- **nobs**
-	- number of observations per trial
 - **regmode**
 	- VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
 - **icregmode**
@@ -48,13 +46,13 @@ The parameters are:
 For example we can set them like this:
 
 ```bash
-gc_instance = GCParameters(1,1100,'OLS', 'LWR', 'AIC', 20, 'F', 0.05, 'FDR', 0)
+gc_instance = GCParameters(1,'OLS', 'LWR', 'AIC', 20, 'F', 0.05, 'FDR', 0)
 ```
 
 Secondly we need to create an instance for FMRIGC class by calling its constructor as below:
 
 ```bash
-c_instance = FMRIGC(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, region_wise_flag, ROIs)
+c_instance = FMRIGC(pathOfData, pathOfMasks, outputPath, fID, lID, number_of_observations, path_to_MVGC, region_wise_flag, ROIs)
 ```
 
 The parameters are:
@@ -69,6 +67,8 @@ The parameters are:
 	- the index of the first subject in the nifti files
 - **lID**
 	- the index of the last subject in the nifti files
+- **number_of_observations**
+	- number of observations per trial
 - **path_to_MVGC**
 	- path to the MVGC toolbox root in our local device
 - **region_wise_flag**
@@ -79,33 +79,28 @@ The parameters are:
 For example we can set them like this:
 
 ```bash
-inst = FMRIGC('/Users/saminjamshidi/Documents/condata/ResidualTimeCourse_THBFP_FIR','/Users/saminjamshidi/Documents/condata/SubjReg_SearchSpaces_GM_ASMasked','/Users/saminjamshidi/Documents/condata/out', 8,9,'/Users/saminjamshidi/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox')
+inst = FMRIGC('/Users/saminjamshidi/Documents/condata/ResidualTimeCourse_THBFP_FIR','/Users/saminjamshidi/Documents/condata/SubjReg_SearchSpaces_GM_ASMasked','/Users/saminjamshidi/Documents/condata/out', 8, 9, 1100, '/Users/saminjamshidi/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox')
 ```
 
 or 
 
 ```bash
-inst = FMRIGC('/Users/saminjamshidi/Documents/condata/ResidualTimeCourse_THBFP_FIR','/Users/saminjamshidi/Documents/condata/SubjReg_SearchSpaces_GM_ASMasked','/Users/saminjamshidi/Documents/condata/out', 8,9,'/Users/saminjamshidi/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox', true, {'rOFA','rFFA','rSTSF'})
+inst = FMRIGC('/Users/saminjamshidi/Documents/condata/ResidualTimeCourse_THBFP_FIR','/Users/saminjamshidi/Documents/condata/SubjReg_SearchSpaces_GM_ASMasked','/Users/saminjamshidi/Documents/condata/out', 8, 9, 1100,'/Users/saminjamshidi/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/The Multivariate Granger Causality (MVGC) Toolbox', true, {'rOFA','rFFA','rSTSF'})
 ```
 
 Finally you should use preprocess and GCM methods for the initialized instance of the **FMRIGC** class! For preprocess function you should pass the number of trials as follow:
 
-Then the preprocess phase will start by calling whether **regionWisePreprocess** or **voxelWisePreprocess** functions. Regarding the **regionWisePreprocess** function you need to use the following parameters:
+Then the preprocess phase will start by calling whether **regionWisePreprocess** or **voxelWisePreprocess** functions. Regarding the **regionWisePreprocess** function you need to specify whether you want to store preprocessed data or not:
 
 ```bash
-c_instance.regionWisePreprocess(number_of_trials, saving_flag)
+c_instance.regionWisePreprocess(saving_flag)
 ```
 
 For example use it as bellow:
 
-```bash
-c_instance.regionWisePreprocess(1100, false)
-```
-
-or
 
 ```bash
-c_instance.regionWisePreprocess(1100, true)
+c_instance.regionWisePreprocess(true)
 ```
 
 For **voxelWisePreprocess** function you just need to specify the flag for saving preprocessed data like this:
@@ -173,13 +168,6 @@ Or if you want to visualize the results of a specific subject, provide its ID li
 c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2) 
 ```
 
-## To do
-
-c_instance.preprocess --> theres a discrepancy between terminology for ntrials, nobs between GCParameters and preprocess; is it possible to pass nobs here, to further save any user discrepancies between nobs specified for preprocess and for gc_instance?
-
-c_instance.GCM--> similar to before some terminology differences between these parameters and those and other functions; is it also possible to not pass the same parameters here implicitly (to avoid user discrepancies), unless there is a good reason to specify different parameters e.g. different output folders for different outputs along the pipeline; I feel like its probably easiest to send all outputs to the same directory (or at least within the same parent directory); if so, perhaps something in the readme where a few variables are defined at the top and passed to multiple functions might do the job
-
-Connectivity --> There seems to be a discrepancy between the documetnation for the Connectivity function (requires 7 inputs) and the function itself (contains an additional parameter 'regionWise'); line 27 of connectivity will always return if only 7 inputs are specified
 
 ## License
 

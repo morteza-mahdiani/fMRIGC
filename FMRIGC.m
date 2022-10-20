@@ -18,6 +18,7 @@ classdef FMRIGC
         prepDataList            % list of pre-processed data for further analysis
         lengthOfTC              % number of time-courses to be analysed for granger causality
         regionWise = false;     % flag to select region-wise or voxel-wise data analysis
+        observations            % number of observations per trial
 
     end
 
@@ -28,15 +29,15 @@ classdef FMRIGC
 
     methods
 
-        function obj = FMRIGC(pathOfData, pathOfMasks, outputPath, fID, lID, path_to_MVGC, ...
+        function obj = FMRIGC(pathOfData, pathOfMasks, outputPath, fID, lID, number_of_observations, path_to_MVGC, ...
                 regionWise, ROIs)
-            if nargin == 6
+            if nargin == 7
                 obj.regions = nan;
                 obj.regionWise = false;
-            elseif nargin == 7
+            elseif nargin == 8
                 disp('Enter the ROIs');
                 return
-            elseif nargin == 8
+            elseif nargin == 9
                 obj.regionWise = regionWise;
                 obj.regions = ROIs;
             else
@@ -57,6 +58,7 @@ classdef FMRIGC
             obj.first_sub_ID = fID;
             obj.last_sub_ID = lID;
             obj.sub_range = (obj.first_sub_ID: obj.last_sub_ID);
+            obj.observations = number_of_observations;
 
             obj.prepDataList = containers.Map;
             obj.lengthOfTC = containers.Map;
@@ -65,7 +67,7 @@ classdef FMRIGC
 
         end
 
-        function regionWisePreprocess(obj, TCDataLength, saveFlag)
+        function regionWisePreprocess(obj, saveFlag)
             if obj.regionWise == false
                 disp('Region-wise flag has set to be false. Create the instance again and set it true!')
                 return
@@ -83,9 +85,9 @@ classdef FMRIGC
                 cSubjTC = append(cSubjTC, fileName);
                 if ~exist(cSubjTC),continue,end
 
-                allSeedTCMat = nan(TCDataLength,size(obj.regions,2));
+                allSeedTCMat = nan(obj.observations, size(obj.regions, 2));
                 for sd =1:size(obj.regions,2)
-                    cSubjSeed = fullfile(obj.inputPathOfMasks,cSubj, obj.regions{sd});
+                    cSubjSeed = fullfile(obj.inputPathOfMasks, cSubj, obj.regions{sd});
                     if ~exist(cSubjSeed),continue,end
 
                     % use cosmo to load data
@@ -167,7 +169,7 @@ classdef FMRIGC
             for n = 1 : length(listOfsubjs)
                 %% Parameters
                 ntrials   = GC_param_obj.ntrials;       % number of trials
-                nobs      = GC_param_obj.nobs;          % number of observations per trial
+                nobs      = obj.observations;           % number of observations per trial
                 regmode   = GC_param_obj.regmode;       % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
                 icregmode = GC_param_obj.icregmode;     % information criteria regression mode ('OLS', 'LWR' or empty for default)
                 morder    = GC_param_obj.morder;        % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
@@ -289,7 +291,7 @@ classdef FMRIGC
             for k = keys(obj.prepDataList)
                 %% Parameters
                 ntrials   = GC_param_obj.ntrials;     % number of trials
-                nobs      = GC_param_obj.nobs;   % number of observations per trial
+                nobs      = obj.observations;   % number of observations per trial
                 regmode   = GC_param_obj.regmode;  % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
                 icregmode = GC_param_obj.icregmode;  % information criteria regression mode ('OLS', 'LWR' or empty for default)
                 morder    = GC_param_obj.morder;  % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
