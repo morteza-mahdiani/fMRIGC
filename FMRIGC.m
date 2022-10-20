@@ -70,7 +70,6 @@ classdef FMRIGC
                 disp('Region-wise flag has set to be false. Create the instance again and set it true!')
                 return
             end
-            seedStr = '%s_%s_10mm_Sphere.nii';
             obj.lengthOfTC('length') = size(obj.regions,2);
 
             % prepare the proposed path
@@ -86,7 +85,7 @@ classdef FMRIGC
 
                 allSeedTCMat = nan(TCDataLength,size(obj.regions,2));
                 for sd =1:size(obj.regions,2)
-                    cSubjSeed = fullfile(obj.inputPathOfMasks,cSubj, sprintf(seedStr,cSubj,obj.regions{sd}));
+                    cSubjSeed = fullfile(obj.inputPathOfMasks,cSubj, obj.regions{sd});
                     if ~exist(cSubjSeed),continue,end
 
                     % use cosmo to load data
@@ -146,7 +145,7 @@ classdef FMRIGC
                 end
             end
         end
-
+        
         function GCMLoad(obj, GC_param_obj, actual_model_order, preprocessed_data_path)
 
             pathOfData = fullfile(preprocessed_data_path, '/');

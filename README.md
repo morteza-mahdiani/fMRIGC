@@ -175,8 +175,6 @@ c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2)
 
 ## To do
 
-ROIs --> full names of files, that are full string matches to avoid issues with duplicate region masks (e.g. multiple FFA masks in the same directory)?
-
 c_instance.preprocess --> theres a discrepancy between terminology for ntrials, nobs between GCParameters and preprocess; is it possible to pass nobs here, to further save any user discrepancies between nobs specified for preprocess and for gc_instance?
 
 c_instance.GCM--> similar to before some terminology differences between these parameters and those and other functions; is it also possible to not pass the same parameters here implicitly (to avoid user discrepancies), unless there is a good reason to specify different parameters e.g. different output folders for different outputs along the pipeline; I feel like its probably easiest to send all outputs to the same directory (or at least within the same parent directory); if so, perhaps something in the readme where a few variables are defined at the top and passed to multiple functions might do the job
