@@ -175,10 +175,6 @@ c_instance.visualize('/Users/Documents/out/GCMOutput/GC3DMat.mat','sn', 2)
 
 ## To do
 
-seed --> is the alternative a random integer? perhaps a comment in the guide explaining this would help
-
-fID, lIS --> is it worth collapsing this into a single parameter with 2 values (vector)?
-
 ROIs --> full names of files, that are full string matches to avoid issues with duplicate region masks (e.g. multiple FFA masks in the same directory)?
 
 c_instance.preprocess --> theres a discrepancy between terminology for ntrials, nobs between GCParameters and preprocess; is it possible to pass nobs here, to further save any user discrepancies between nobs specified for preprocess and for gc_instance?

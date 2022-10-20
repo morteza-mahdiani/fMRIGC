@@ -167,16 +167,16 @@ classdef FMRIGC
 
             for n = 1 : length(listOfsubjs)
                 %% Parameters
-                ntrials   = GC_param_obj.ntrials;     % number of trials
-                nobs      = GC_param_obj.nobs;   % number of observations per trial
-                regmode   = GC_param_obj.regmode;  % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
-                icregmode = GC_param_obj.icregmode;  % information criteria regression mode ('OLS', 'LWR' or empty for default)
-                morder    = GC_param_obj.morder;  % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
-                momax     = GC_param_obj.momax;     % maximum model order for model order estimation
-                tstat     = GC_param_obj.tstat;     % statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
-                alpha     = GC_param_obj.alpha;   % significance level for significance test
-                mhtc      = GC_param_obj.mhtc;  % multiple hypothesis test correction (see routine 'significance')
-                seed      = GC_param_obj.seed;      % random seed (0 for unseeded)
+                ntrials   = GC_param_obj.ntrials;       % number of trials
+                nobs      = GC_param_obj.nobs;          % number of observations per trial
+                regmode   = GC_param_obj.regmode;       % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
+                icregmode = GC_param_obj.icregmode;     % information criteria regression mode ('OLS', 'LWR' or empty for default)
+                morder    = GC_param_obj.morder;        % model order to use ('actual', 'AIC', 'BIC' or supplied numerical value)
+                momax     = GC_param_obj.momax;         % maximum model order for model order estimation
+                tstat     = GC_param_obj.tstat;         % statistical test for MVGC:  'chi2' for Geweke's chi2 test (default) or'F' for Granger's F-test
+                alpha     = GC_param_obj.alpha;         % significance level for significance test
+                mhtc      = GC_param_obj.mhtc;          % multiple hypothesis test correction (see routine 'significance')
+                seed      = GC_param_obj.seed;          % random seed (0 for unseeded)
 
                 %% Generate VAR test data
                 nvars = obj.lengthOfTC('length'); % number of variables
